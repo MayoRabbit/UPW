@@ -3,7 +3,7 @@
 /*******************************************************************************
 
 <one line to give the program's name and a brief idea of what it does.>
-Copyright (C) 2022 <name of author>
+Copyright (C) 2022-2023 <name of author>
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -25,45 +25,41 @@ Dispalays a form to create a blog article. Drafts can be saved to post later.
 
 *******************************************************************************/
 
-namespace article;
+namespace BHU;
 
-//use lib\core\class\
-//use lib\core\class\Article;
-use lib\class\Form;
-use lib\class\HTML;
-use lib\class\Itemlist;
-use lib\class\URL;
+use core\Form;
+use core\HTML;
+use core\URL;
+use core\User;
 
 require_once("../lib/startup.php");
 
 // Administrators and those deemed worthy to create articles may do so. Make
 // sure user is one of them. Chastize them if they're not.
-if(!$user->is_administrator())
+if($user->get_type != USER_TYPE_ADMINISTRATOR)
 {
-	
-	return;
-}
 
+}
 
 // If an ID number is given for an article, check that it exists in the drafts
 // table in the database. If it doesn't, display an error.
-if($_GET["id"])
+if(array_key_exists("id", $_GET))
 {
-	$article = new Article();
-	if(!$article->exists())
+	// ID better be an integer.
+	if(!is_int($_GET["id"]))
 	{
-		
 	}
+	elseif(!$article->exists("articles", "id", $_GET["id"]))
+	{
+
+	}
+	else
+	{
+	}	
 }
-
-if($article->has_comments())
-{
-	$comment_list = new itemlist();
-}
-
-
 
 // Create form for posting an article. If editing a draft, use the article data
 // to fill in the form.
 $form = new Form();
 
+SHUT_IT_DOWN();

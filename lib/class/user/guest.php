@@ -3,7 +3,7 @@
 /*******************************************************************************
 
 <one line to give the program's name and a brief idea of what it does.>
-Copyright (C) 2022 <name of author>
+Copyright (C) 2023 <name of author>
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -19,25 +19,22 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 ********************************************************************************
 
-lib/core/user/guest.php
-
-
+lib/class/user/guest.php
 
 *******************************************************************************/
 
-namespace lib\class\user;
+namespace core\user;
 
-use \lib\class\User as User;
-
-class Guest extends User
+class Guest extends \core\User
 {
-	const TYPE	= \lib\class\UserType::Guest;
+	const TYPE	= \core\UserType::Guest;
 	const ID	= 0;
 	const NAME	= "Guest";
 
 	function __construct()
 	{
-		echo "OOH!";
+		parent::__construct();
+		$this->header = new \core\Header();
 	}
 	
 	function __destruct()

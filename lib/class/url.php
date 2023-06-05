@@ -25,7 +25,7 @@ Handles URLs. Can be used to generate new URLs or handle existing ones.
 
 *******************************************************************************/
 
-namespace lib\class;
+namespace core;
 
 enum URLProtocol : string
 {
@@ -80,7 +80,6 @@ class URL
 		{
 			$components = parse_url($url);
 
-			print_r($components);
 			foreach($components as $component => $value)
 				$this->$component = $value;
 		}

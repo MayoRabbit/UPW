@@ -19,13 +19,13 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 ********************************************************************************
 
-lib/core/class/html.php
+lib/class/html.php
 
-HTML class.
+
 
 *******************************************************************************/
 
-namespace lib\core\class;
+namespace core;
 
 enum HTMLType
 {

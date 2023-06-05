@@ -21,16 +21,23 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 lib/core/traits/exists.php
 
-For objects that need a specific table and row in the databse to exist, checks
-that it does. This is called statically, as the row needs to exist before the
-object does, naturally.
+Functions for objects that need a specific table and row in the database to
+exist in order to obtain their data.
 
 *******************************************************************************/
 
-namespace lib\traits;
+namespace core;
 
 trait Exists
 {
+	private readonly int	$id;
+	private readonly string	$date, $contents;
+
+	/**
+	 * Checks row in the database exists. Called statically as the row needs to
+	 * exist before the object does, naturally.
+	 */
+
 	public static function exists(string $table, string $column, int $value) : bool
 	{
 		global $mysqli;
@@ -38,5 +45,21 @@ trait Exists
 		$result = $mysqli->query("SELECT {$column} FROM {$table} WHERE {$column}={$value};") or die($mysqli->error);
 
 		return $result->num_rows ? true : false;
+	}
+
+	/**
+	 * Gets data from a single row from a single table in the database.
+	 * Converts the result object to an array for use.
+	 */
+
+	public function get_data(string $fields, string $table, string $column, string $value) : array
+	{
+		global $mysqli;
+
+		$result = $mysqli->query("SELECT {$fields} FROM {$table} WHERE {$column}={$value};") or die($mysqli->error);
+		if($result)
+			return $result->fetch_assoc();
+		else
+			return NULL;
 	}
 }

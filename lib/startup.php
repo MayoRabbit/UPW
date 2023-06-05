@@ -25,11 +25,11 @@ Startup. Initializtion. Common stuff.
 
 *******************************************************************************/
 
-namespace lib;
+namespace core;
 
-use lib\interface\Displayable;
-use lib\class\URL;
-use lib\class\User;
+// This is defined if submitting data through AJAX. It can only exist in the
+// $_POST array.
+define("AJAX_MODE", array_key_exists("AJAX", $_POST));
 
 // PHP include path. Anything needed should be one or two parent directories up
 // from the source script.
@@ -43,20 +43,31 @@ spl_autoload_register
 (
 	function($name)
 	{
-		$name = strtolower($name);
+		// Get name of object to load.
+		$name = substr($name, (strpos($name, "\\") + 1));
 
-		// Attempts to include the file using PHP's set include path.
-		// Should be no problem as long as the file is found somewhere.
-		require_once("{$name}.php");
+		// Find which folder the source file for the object is in.
+		// Why can't file_exists() use the include path the way require_once()
+		// does?
+		foreach(["class", "interface", "traits"] as $dir)
+		if
+		(
+			file_exists("../lib/{$dir}/{$name}.php") ||
+			file_exists("../../lib/{$dir}/{$name}.php")
+		)
+		{
+			require_once("lib/{$dir}/{$name}.php");
+			return;
+		}
 	}
 );
 
-// URL.
+// URL supplied by the browser.
 define("BROWSER_URL", new URL($_SERVER["REQUEST_URI"]));
 
 // MySQL database connection.
 // Replace these values with your own.
-$mysqli = new \mysqli("<host>", "<name>", "<password>", "<database>");
+$mysqli = new \mysqli("localhost", "root", "babaloo", "manilow");
 if($mysqli->connect_error)
     die("Connect Error ({$mysqli->connect_errno}){$mysqli->connect_error}!");
 
@@ -64,15 +75,8 @@ if($mysqli->connect_error)
 // new user object. Otherwise, sets to NULL, which indicates a guest user.
 $user = user::login();
 
-$displayables = array();
-
 // Closes program.
 function SHUT_IT_DOWN() : void
 {
-	echo "HERE";
-	print_r($displayables);
-	foreach($displayables as $displayable)
-		$displayable->display();
-
 	clearstatcache();
 }

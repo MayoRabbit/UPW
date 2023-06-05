@@ -19,13 +19,13 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 ********************************************************************************
 
-lib/interface/displayable.php
+lib/interface/templateable.php
 
 Interface for objects that are displayed in the browser using HTML templates.
 
 *******************************************************************************/
 
-namespace lib\interface;
+namespace core;
 
 interface Displayable
 {

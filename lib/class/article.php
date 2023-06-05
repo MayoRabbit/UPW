@@ -19,62 +19,66 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 ********************************************************************************
 
-lib/core/class/article.php
+lib/class/article.php
 
-Blog article. This is used for both viewing and editing articles.
+Blog article. If the article is archived, and thus does not have or allow
+comments, this is the class used. Otherwise one of the classes in the /article/
+subfolder is used.
 
 *******************************************************************************/
 
-namespace lib\class;
+namespace BHU;
 
-use lib\interface\Displayable;
-use lib\traits\exists as Exists;
+// Interfaces.
+use \core\Displayable;
+use \core\Retrievable as SRR;
 
+// Traits.
+use \core\Exists;
+
+// Article type.
 enum ArticleType
 {
-	case Active;	// Has comments. User may be able to comment depending on status.
-	case Archive;	// No comments. Comments not allowed.
+	case Archive;	// Base article type. No comments, comments not allowed.
+	case Active;	// Allows comments. User may be able to comment depending on status.
 	case Admin;		// Includes admin features, also applies to non-site admins who made the article.
 }
 
+// For articles that allow comments, sets whether the user may comment.
+// For archived articles, this is always "0".
 enum CommentsType : int
 {
 	case NOTALLOWED	= 0;
 	case ALLOWED	= 1;
 }
 
-class Article implements Displayable
+/**
+ * Article class. These are displayed as HTML.
+ */
+
+readonly class Article implements SRR, Displayable
 {
 	use Exists;
 
+	// Class constants.
 	const DB_TABLE	= "articles";
 	const DB_COLUMN	= "id";
 	const DB_QUERY	= "SELECT
 				articles.*,
 				article_categories.id as cat_id,
 				article_categories.name as cat_name,
-				active_articles.id as active,
-				(SELECT COUNT(*) from article_comments WHERE article_id = ?) as num_comments
+				active_articles.id as active
 			FROM articles
 			LEFT JOIN article_categories ON article_categories.id = articles.category_id
 			LEFT JOIN active_articles ON active_articles.id = articles.id
 			WHERE articles.id = ?";
 
-	private readonly ArticleType $type;
-	private int $id = 0;
-
-	// This can be NULL if the article does not allow comments.
-	private ?int $num_comments = NULL;
-
-	private readonly string
+	private string
 		$category,
-		$date,
 		$title;
 
-	private ?string $contents = NULL;
-
 	// If viewing the front page, this is used to get the id number of the
-	// latest article posted.
+	// latest article posted. This should not return zero for any reason.
 	public static function get_latest_id() : int
 	{
 		global $mysqli;
@@ -86,12 +90,27 @@ class Article implements Displayable
 				: 0;
 	}
 
+	// Gets the article type.
+	public static function get_article_type() : ArticleType
+	{
+		global $user;
+
+		// Article is admin type if either the user is an admin, or is not admin
+		// but created the article.
+		if($user->get_type())
+		{}
+		
+		
+		
+		// Default.
+		return ArticleType::Archive;
+	}
+
 	function __construct(int $id)
 	{
 		global $mysqli;
 
 		$stmt = $mysqli->prepare(DB_QUERY);
-		
 
 		// Attempt to get article data from the database.
 		$result = $mysqli->query
@@ -126,6 +145,6 @@ class Article implements Displayable
 
 	public function display() : void
 	{
-		echo "BUTTS";
+
 	}
 }

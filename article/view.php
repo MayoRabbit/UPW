@@ -3,7 +3,7 @@
 /*******************************************************************************
 
 <one line to give the program's name and a brief idea of what it does.>
-Copyright (C) 2022 <name of author>
+Copyright (C) 2022-2023 <name of author>
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -26,11 +26,11 @@ a form to comment, if applicable, acceptable, and ascertainable.
 
 *******************************************************************************/
 
-namespace article;
+namespace BHU;
 
 require_once("../lib/startup.php");
 
-use \lib\class\article;
+use function \core\SHUT_IT_DOWN;
 
 // If viewing the front page, get the id of the most recently posted article.
 if($_GET["id"] == -1)
@@ -39,14 +39,12 @@ if($_GET["id"] == -1)
 //Check that article exists in the databse. If it doesn't, that's bad.
 if(!article::exists("articles", "id", $_GET["id"]))
 {
-	$error = new \lib\class\Error(\lib\class\ErrorType::INV_DATA, "article");
+	$error = new \core\Error(\core\ErrorType::INV_DATA, "article");
 	return;
 }
 
 // Get article.
 $article = new Article($_GET["id"]);
-
-$displayables[] = $article;
 
 // List of comments, if article has any. Does not apply to archived articles, as
 // comments for those are purged upon archiving.

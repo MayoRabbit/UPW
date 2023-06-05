@@ -3,7 +3,7 @@
 /*******************************************************************************
 
 <one line to give the program's name and a brief idea of what it does.>
-Copyright (C) 2022 <name of author>
+Copyright (C) 2022-2023 <name of author>
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -19,21 +19,20 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 ********************************************************************************
 
-arcile/create.php
+arcile/edit.php
 
 Dispalays a form to edit a blog article. User must be either an administrator or
 the user who posted the article to use this feature.
 
 *******************************************************************************/
 
-namespace article;
+namespace BHU;
 
-//use lib\core\class\
-//use lib\core\class\Article;
-use lib\core\class\Form;
-use lib\core\class\HTML;
-use lib\core\class\Itemlist;
-use lib\core\class\URL;
+use lib\class\Article;
+use lib\class\Form;
+use lib\class\HTML;
+use lib\class\Itemlist;
+use lib\class\URL;
 
 require_once("../lib/core/startup.php");
 

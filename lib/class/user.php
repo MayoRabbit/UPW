@@ -19,7 +19,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 ********************************************************************************
 
-lib/user.php
+lib/class/user.php
 
 This is you. The user viewing the site. Your hopes, your dreams, everything
 about you.
@@ -29,7 +29,7 @@ the /lib/core/class/user directory. And you will like it.
 
 *******************************************************************************/
 
-namespace lib\class;
+namespace core;
 
 // One of the various user types. Ordered from least to most powerful. The value
 // is determined by a MySQL function in the database.
@@ -49,9 +49,11 @@ enum UserType
  * User class.
  */
 
-abstract class User
+abstract class User //implemets 
 {
 	private int $id = 0;
+	
+	protected Header $header;
 
 	/**
 	 * Attempts to log user into the website. Returns the specific user class
@@ -95,9 +97,8 @@ abstract class User
 	// Constructor.
 	function __construct()
 	{
-		$this->id = $_COOKIE["bhu"]["id"];
 	}
-	
+
 	public function get_id() : int
 	{
 		return $this->id;

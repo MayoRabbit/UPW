@@ -19,29 +19,24 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 ********************************************************************************
 
-lib/core/class/header.php
+lib/class/header.php
 
-Handles the HTML header. This is generally constructed of the following:
-
-- A header image (or banner, if you insist).
-- The user information panel
+Information related to the user viewing the site that is displayed in the
+HTML header portion of the page. The information displayed is 
 
 *******************************************************************************/
 
-namespace lib\class;
+namespace core;
 
-use lib\class\avatar;
-use lib\class\html;
-use lib\interface\displayable as iDisp;
-
-class Header impliments iDisp
+class Header implements Displayable
 {
-	private HTML $html;
+	// Can be NULL if the user is guest or has no Avatar. Default image is used
+	// in this case.
+	private ?Avatar $avatar;
 
-	$avatar = new Avatar;
-
-	public function display()
+	public function __construct()
 	{
-		
 	}
+
+	public function display() : void {}
 }

@@ -25,7 +25,7 @@ Interface for objects that can be clicked (links, images, video, etc).
 
 *******************************************************************************/
 
-namespace lib\interface;
+namespace core;
 
 interface Clickable extends Displayable
 {

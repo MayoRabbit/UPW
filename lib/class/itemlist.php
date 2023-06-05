@@ -25,7 +25,7 @@ Handles a list of items.
 
 *******************************************************************************/
 
-namespace lib\class;
+namespace core;
 
 // Header shows the list options. Can be placed at the top and / or bottom of
 // the list.
@@ -39,13 +39,13 @@ enum HeaderPlacement : int
 // List options. These are common option for all lists. List-specific options
 // are set by either extended classes or by the script for the page being
 // viewed.
-enum SortDirection
+enum SortDirection : int
 {
-	case Ascending;
-	case Descending;
+	case Ascending		= 0x4;
+	case Descending		= 0x8;
 }
 
-enum ItemsPerPage
+enum ItemsPerPage : int
 {
 	case XSmall	= 10;
 	case Small	= 20;
@@ -65,11 +65,11 @@ class ItemList
 	static private int
 		$per_page = $mysqli->query("SELECT FROM WHERE)->fetch_assoc()[""];
 	*/
-	
+
 	// A list may have no items to display (either none exist or the page number
-	// is beyond the number available), so these can end up empty.
-	private int		$num_items	= 0;
-	private array	$items		= [];
+	// is beyond the number available), so these can end up NULL.
+	private ?int	$num_items	= NULL;
+	private ?array	$items		= NULL;
 	
 	// Supplied by user's display settings. Common for any and all item lists
 	// shown on a page.

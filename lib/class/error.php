@@ -21,11 +21,20 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 lib/class/error.php
 
+Displays an error message as the page's content. This is used for a few cases:
+
+- If the user is attempting to access a page for which they do not have
+  permission, displays an error.
+- If the page requires an ID of some kind to retrieve data from the database to
+  display content with, shows an error if no ID is given or if the ID given
+  results in no data being found.
+- Otherwise, a custom error message may be provided.
+
 *******************************************************************************/
 
-namespace lib\class;
+namespace core;
 
-use \lib\interface\Displayable;
+use \core\Displayable;
 
 //	Error types.
 enum ErrorType : string
@@ -36,16 +45,15 @@ enum ErrorType : string
 	case CUSTOM		= "%s";
 }
 
-class Error extends \Exception implements Displayable 
+class Error implements Displayable 
 {
 	function __construct(ErrorType $type, string $data)
 	{
-		parent::__construct(str_replace("%s", $data, $type->value));
-		$html->set_items("message", $message);
+		echo str_replace("%s", $data, $type->value);
 	}
 
 	public function display() : void
 	{
-		$html->display();
+		echo "NO";
 	}
 }
